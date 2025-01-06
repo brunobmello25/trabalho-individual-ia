@@ -19,6 +19,7 @@ class RandomForest:
         features = self.dataset.data.features
         targets = self.dataset.data.targets
         print(targets.shape)
+        # Necessário para converter o shape de (n, 1) para (n,) (matriz de uma coluna pra vetor)
         targets = targets.values.ravel()
         print(targets.shape)
 
