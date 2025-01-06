@@ -19,26 +19,62 @@ class MultilayerPerceptron:
     def run(self):
         features = self.dataset.data.features
         targets = self.dataset.data.targets
-        print(targets.shape)
         targets = targets.values.ravel()
-        print(targets.shape)
 
-        Utils.print_features_info(features)
+        encoded_features = self._onehotencode(features)
 
+        features_train, features_test, target_train, target_test = self._split(
+            encoded_features, targets)
+
+        features_train, features_test = self._normalize(
+            features_train, features_test)
+
+        classifier = self._train_classifier(features_train, target_train)
+
+        prediction = self._predict(classifier, features_test)
+
+        accuracy = accuracy_score(target_test, prediction)
+        print(f"Precisão da Multilayer Perceptron: {accuracy:.2f}")
+
+        overfitting_chance = self._measure_overfitting_chance(
+            classifier, features_train, target_train, features_test, target_test)
+        print(f"Chance de overfitting: {overfitting_chance:.2f}")
+
+    def _measure_overfitting_chance(self, classifier, features_train, target_train, features_test, target_test):
+        # TODO: confirmar com a professora se
+        # isso faz sentido
+        """ 
+        Mede a acurácia dos dados de treinamento e dos
+        dados de teste. se tiver uma acurácia alta no
+        treinamento e baixa nos testes, então possívelmente
+        houve overfitting
+        """
+        train_accuracy = accuracy_score(
+            target_train, classifier.predict(features_train))
+        target_accuracy = accuracy_score(
+            target_test, classifier.predict(features_test))
+
+        return abs(target_accuracy - train_accuracy)
+
+    def _onehotencode(self, features):
         encoder = OneHotEncoder()
         before = time.time()
-        encoded_features = encoder.fit_transform(features)
+        encoded = encoder.fit_transform(features)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(f"tempo para encode: {duration}ms")
+        return encoded
 
+    def _split(self, encoded_features, targets):
         before = time.time()
         features_train, features_test, target_train, target_test = train_test_split(
             encoded_features, targets, test_size=0.3, random_state=self.random_state)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(f"tempo para split: {duration}ms")
+        return features_train, features_test, target_train, target_test
 
+    def _normalize(self, features_train, features_test):
         scaler = StandardScaler(with_mean=False)
         before = time.time()
         features_train = scaler.fit_transform(features_train)
@@ -47,6 +83,9 @@ class MultilayerPerceptron:
         duration = Utils.format_duration(before, after)
         print(f"tempo para normalizar: {duration}ms")
 
+        return features_train, features_test
+
+    def _train_classifier(self, features_train, target_train):
         classifier = MLPClassifier(
             random_state=self.random_state,
             hidden_layer_sizes=self.hidden_layer_sizes,
@@ -60,11 +99,12 @@ class MultilayerPerceptron:
         print(
             f"tempo para treinar com layers {self.hidden_layer_sizes}: {duration}ms")
 
+        return classifier
+
+    def _predict(self, classifier, features_test):
         before = time.time()
         prediction = classifier.predict(features_test)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(f"tempo para predict: {duration}ms")
-
-        accuracy = accuracy_score(target_test, prediction)
-        print(f"Precisão da Multilayer Perceptron: {accuracy:.2f}")
+        return prediction
