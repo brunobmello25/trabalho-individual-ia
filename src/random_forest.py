@@ -23,8 +23,6 @@ class RandomForest:
         targets = targets.values.ravel()
         print(targets.shape)
 
-        Utils.print_features_info(features)
-
         encoder = OneHotEncoder()
         before = time.time()
         encoded_features = encoder.fit_transform(features)

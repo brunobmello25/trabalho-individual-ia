@@ -17,8 +17,6 @@ class DecisionTree:
         features = self.dataset.data.features
         targets = self.dataset.data.targets
 
-        Utils.print_features_info(features)
-
         """
         OneHot encoding é o procedimento responsável por converter
         uma matriz de variáveis textuais em variáveis binárias. Então,
