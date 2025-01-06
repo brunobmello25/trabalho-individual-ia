@@ -3,23 +3,23 @@ from typing import Any
 
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.neural_network import MLPClassifier
 
 import src.utils as Utils
 
 
-class RandomForest:
-    def __init__(self, dataset, random_state, tree_count):
+class MultilayerPerceptron:
+    def __init__(self, dataset, random_state, max_iter, hidden_layer_sizes):
         self.dataset: Any = dataset
         self.random_state: int = random_state
-        self.tree_count = tree_count
+        self.max_iter = max_iter
+        self.hidden_layer_sizes = hidden_layer_sizes
 
     def run(self):
         features = self.dataset.data.features
         targets = self.dataset.data.targets
         print(targets.shape)
-        # Necessário para converter o shape de (n, 1) para (n,) (matriz de uma coluna pra vetor)
         targets = targets.values.ravel()
         print(targets.shape)
 
@@ -39,14 +39,26 @@ class RandomForest:
         duration = Utils.format_duration(before, after)
         print(f"tempo para split: {duration}ms")
 
-        classifier = RandomForestClassifier(
-            random_state=self.random_state, n_estimators=self.tree_count)
+        scaler = StandardScaler(with_mean=False)
+        before = time.time()
+        features_train = scaler.fit_transform(features_train)
+        features_test = scaler.transform(features_test)
+        after = time.time()
+        duration = Utils.format_duration(before, after)
+        print(f"tempo para normalizar: {duration}ms")
+
+        classifier = MLPClassifier(
+            random_state=self.random_state,
+            hidden_layer_sizes=self.hidden_layer_sizes,
+            # Necessário pra garantir que o treinamento termine
+            max_iter=self.max_iter
+        )
         before = time.time()
         classifier.fit(features_train, target_train)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(
-            f"tempo para treinar com {self.tree_count} árvores: {duration}ms")
+            f"tempo para treinar com layers {self.hidden_layer_sizes}: {duration}ms")
 
         before = time.time()
         prediction = classifier.predict(features_test)
@@ -55,4 +67,4 @@ class RandomForest:
         print(f"tempo para predict: {duration}ms")
 
         accuracy = accuracy_score(target_test, prediction)
-        print(f"Precisão da Random Forest: {accuracy:.2f}")
+        print(f"Precisão da Multilayer Perceptron: {accuracy:.2f}")

@@ -65,3 +65,21 @@ tempo para split: 0.74ms
 tempo para treinar com 100 árvores: 277.19ms
 tempo para predict: 8.90ms
 Random Forest Accuracy: 0.98
+
+## Multi-layer Perceptron com (100,) camadas e 300 iterações
+
+tempo para encode: 20.69ms
+tempo para split: 0.76ms
+tempo para normalizar: 1.24ms
+tempo para treinar com layers (100,): 995.19ms
+tempo para predict: 0.81ms
+Precisão da Multilayer Perceptron: 0.98
+
+## Multi-layer Perceptron com (100,100) camadas e 300 iterações
+
+tempo para encode: 20.70ms
+tempo para split: 0.71ms
+tempo para normalizar: 1.21ms
+tempo para treinar com layers (100, 100): 911.81ms
+tempo para predict: 2.89ms
+Precisão da Multilayer Perceptron: 0.98
