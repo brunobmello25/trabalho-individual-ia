@@ -83,3 +83,8 @@ tempo para normalizar: 1.21ms
 tempo para treinar com layers (100, 100): 911.81ms
 tempo para predict: 2.89ms
 Precisão da Multilayer Perceptron: 0.98
+
+# Dúvidas
+
+- [ ] a acurácia de decision tree e multilayer perceptron com uma camada de 100 neuronios foram as mais bem sucedidas, ambas com menos de 1ms de de tempo de predict e 98% de precisão. Os outros modelos não ficaram mt diferentes, mas levaram mais tempo de execução. Isso significa que os dados são bem separáveis e um modelo simples já basta, né?
+- [ ] Perguntar se o formato do código já está bom
