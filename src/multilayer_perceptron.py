@@ -3,7 +3,7 @@ from typing import Any
 
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.neural_network import MLPClassifier
 
 import src.utils as Utils
@@ -25,9 +25,6 @@ class MultilayerPerceptron:
 
         features_train, features_test, target_train, target_test = self._split(
             encoded_features, targets)
-
-        features_train, features_test = self._normalize(
-            features_train, features_test)
 
         classifier = self._train_classifier(features_train, target_train)
 
@@ -73,17 +70,6 @@ class MultilayerPerceptron:
         duration = Utils.format_duration(before, after)
         print(f"tempo para split: {duration}ms")
         return features_train, features_test, target_train, target_test
-
-    def _normalize(self, features_train, features_test):
-        scaler = StandardScaler(with_mean=False)
-        before = time.time()
-        features_train = scaler.fit_transform(features_train)
-        features_test = scaler.transform(features_test)
-        after = time.time()
-        duration = Utils.format_duration(before, after)
-        print(f"tempo para normalizar: {duration}ms")
-
-        return features_train, features_test
 
     def _train_classifier(self, features_train, target_train):
         classifier = MLPClassifier(
