@@ -18,6 +18,18 @@
 
 O código está dividido nos seguintes arquivos:
 
-- **src/main.py**: entrypoint da aplicação, com uma função main que chama a classe de parse dos argumentos 
-- **src/args.py**: classe responsável por parsear os argumentos de CLI. Usada para converter os parâmetros `--decision-tree`, `--random-forest` e `--multi-perceptron`
-- **src/decision_tree.py**: classe com o código necessário para
+- **src/main.py**: Entrypoint da aplicação, com uma função main que chama a classe de parse dos argumentos 
+- **src/consts.py**: Arquivo com alguns valores constantes que são reutilizados ao longo do projeto
+- **src/args.py**: Classe responsável por parsear os argumentos de CLI. Usada para converter os parâmetros `--decision-tree`, `--random-forest` e `--multi-perceptron`
+- **src/decision_tree.py**: Classe com toda implementação do método Decision Tree
+- **src/random_forest.py**: Classe com toda implementação do método Random Forest
+- **src/multilayer_perceptron.py**: Classe com toda implementação do método Multilayer Perceptron
+- **src/utils.py**: Arquivo com funções utilitárias que foram utilizadas ao longo do desenvolvimento.
+
+## Algoritmos de aprendizado de máquina e implementações extras utilizados
+
+Para o desenvolvimento do projeto foram utilizadas as três classes principais do scikit learn: `DecisionTreeClassifier`, `RandomForestClassifier` e `MLPClassifier`. Além disso, para separar o dataset em uma parcela de treinamento e uma parcela de teste foi utilizada a função `train_test_split`, também do scikit learn.
+
+Nos três métodos foi necessária uma etapa de pré processamento para transformar os dados categóricos em dados númericos. Para isso, foi utilizada a classe `OneHotEncoder`. Inicialmente a etapa de pré processamento estava utilizando o método `get_dummies` da biblioteca pandas, porém após realizar alguns testes de tempo de execução percebi que a codificação via onehotencoding resultava em um menor consumo de memória, por conta da matriz esparsa gerada pelo onehotencoding, então resolvi seguir com ela.
+
+Por fim, a função `accuracy_score` do sklearn foi utilizada para medir a precisão da previsão do modelo.
