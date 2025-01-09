@@ -18,22 +18,48 @@ class DecisionTree:
         features = self.dataset.data.features
         targets = self.dataset.data.targets
 
+        encoded_features, encoder = self._onehotencode(features)
+
+        features_train, features_test, target_train, target_test = self._split(
+            encoded_features, targets)
+
+        classifier = self._make_classifier()
+
+        self._print_classifier_parameters(classifier)
+
+        self._train_classifier(classifier, features_train, target_train)
+
+        prediction = self._predict(classifier, features_test)
+
+        accuracy = accuracy_score(target_test, prediction)
+        print(f"Precisão da Decision Tree: {accuracy:.2f}")
+
+        self._plot_tree(classifier, encoder)
+
+    def _onehotencode(self, features):
         encoder = OneHotEncoder()
         before = time.time()
-        encoded_features = encoder.fit_transform(features)
+        encoded = encoder.fit_transform(features)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(f"tempo para encode: {duration}ms")
+        return encoded, encoder
 
+    def _split(self, encoded_features, targets):
         before = time.time()
         features_train, features_test, target_train, target_test = train_test_split(
             encoded_features, targets, test_size=0.3, random_state=self.random_state)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(f"tempo para split: {duration}ms")
+        return features_train, features_test, target_train, target_test
 
+    def _make_classifier(self):
         classifier = DecisionTreeClassifier(
             random_state=self.random_state, criterion='gini')
+        return classifier
+
+    def _print_classifier_parameters(self, classifier):
         print('---------------------')
         print('parameters:')
         print('criterion: ', classifier.criterion)
@@ -43,24 +69,26 @@ class DecisionTree:
         print('max_features: ', classifier.max_features)
         print('class_weight: ', classifier.class_weight)
         print('---------------------')
+
+    def _train_classifier(self, classifier, features_train, target_train):
         before = time.time()
         classifier.fit(features_train, target_train)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(f"tempo para treinar: {duration}ms")
 
+    def _predict(self, classifier, features_test):
         before = time.time()
         prediction = classifier.predict(features_test)
         after = time.time()
         duration = Utils.format_duration(before, after)
         print(f"tempo para predict: {duration}ms")
+        return prediction
 
-        accuracy = accuracy_score(target_test, prediction)
-        print(f"Precisão da Decision Tree: {accuracy:.2f}")
-
+    def _plot_tree(self, classifier, encoder):
         plt.figure(figsize=(80, 40))
         plot_tree(classifier, filled=True,
                   feature_names=encoder.get_feature_names_out(), class_names=True)
         plt.title("Árvore de Decisão")
-        plt.savefig("decision_tree.png")  # Salva a imagem no formato PNG
+        plt.savefig("decision_tree.png")
         plt.close()
