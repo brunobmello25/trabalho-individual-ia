@@ -33,3 +33,10 @@ Para o desenvolvimento do projeto foram utilizadas as três classes principais d
 Nos três métodos foi necessária uma etapa de pré processamento para transformar os dados categóricos em dados númericos. Para isso, foi utilizada a classe `OneHotEncoder`. Inicialmente a etapa de pré processamento estava utilizando o método `get_dummies` da biblioteca pandas, porém após realizar alguns testes de tempo de execução percebi que a codificação via onehotencoding resultava em um menor consumo de memória, por conta da matriz esparsa gerada pelo onehotencoding, então resolvi seguir com ela.
 
 Por fim, a função `accuracy_score` do sklearn foi utilizada para medir a precisão da previsão do modelo.
+
+## Variações de parâmetros utilizadas
+
+### Decision Tree
+
+- o parâmetro `criterion` foi testado com os valores `gini` e `entropy`, que influencia na forma em que as divisões são avaliadas. Isso pode influenciar na estrutura final da árvore.
+
