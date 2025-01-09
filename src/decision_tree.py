@@ -25,7 +25,7 @@ class DecisionTree:
 
         classifier = self._make_classifier()
 
-        self._print_classifier_parameters(classifier)
+        # self._print_classifier_parameters(classifier)
 
         self._train_classifier(classifier, features_train, target_train)
 
@@ -56,7 +56,7 @@ class DecisionTree:
 
     def _make_classifier(self):
         classifier = DecisionTreeClassifier(
-            random_state=self.random_state, criterion='gini')
+            random_state=self.random_state, criterion='gini', max_depth=10)
         return classifier
 
     def _print_classifier_parameters(self, classifier):
@@ -64,10 +64,6 @@ class DecisionTree:
         print('parameters:')
         print('criterion: ', classifier.criterion)
         print('max_depth: ', classifier.max_depth)
-        print('min_samples_split: ', classifier.min_samples_split)
-        print('min_samples_leaf: ', classifier.min_samples_leaf)
-        print('max_features: ', classifier.max_features)
-        print('class_weight: ', classifier.class_weight)
         print('---------------------')
 
     def _train_classifier(self, classifier, features_train, target_train):
