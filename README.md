@@ -16,6 +16,22 @@ adult income: https://archive.ics.uci.edu/dataset/2/adult
 - valores testados para split (70-30, 60-40, 80-20)
 - acurácia dos métodos
 
+# Onehot encoding
+
+OneHot encoding é o procedimento responsável por converter
+uma matriz de variáveis textuais em variáveis binárias. Então,
+se temos uma Variável e três registros cada um com uma característica,
+ficamos com três colunas "Característica 1", "Característica 2" e "Característica 3",
+booleanas. Em seguida, o primeiro registro tem a característica 1, porém não tem a 2 nem 3,
+o segundo tem a 2, mas não tem a 1 nem 3 e o terceiro tem a 3, mas
+não tem a 1 nem 2.
+Esse processo gera uma coluna nova para cada variável de
+cada feature do dataset original. Como a matriz resultante é
+composta por uma grande maioria de zeros, o encoder gera uma
+matriz esparsa, que grava apenas os valores non zero e suas posições.
+O scikit já está preparado para lidar com matrizes esparsas, então
+não precisamos fazer nada a respeito disso.
+
 # timestamps
 
 ## Decision tree
