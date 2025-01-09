@@ -26,12 +26,14 @@ class MultilayerPerceptron:
         features_train, features_test, target_train, target_test = self._split(
             encoded_features, targets)
 
-        classifier = self._train_classifier(features_train, target_train)
+        classifier = self._make_classifier()
+        self._print_parameters()
+        self._train_classifier(classifier, features_train, target_train)
 
         prediction = self._predict(classifier, features_test)
 
         accuracy = accuracy_score(target_test, prediction)
-        print(f"Precisão da Multilayer Perceptron: {accuracy:.2f}")
+        print(f"Precisão da Multilayer Perceptron: {accuracy:.4f}")
 
         overfitting_chance = self._measure_overfitting_chance(
             classifier, features_train, target_train, features_test, target_test)
@@ -71,13 +73,16 @@ class MultilayerPerceptron:
         print(f"tempo para split: {duration}ms")
         return features_train, features_test, target_train, target_test
 
-    def _train_classifier(self, features_train, target_train):
+    def _make_classifier(self):
         classifier = MLPClassifier(
             random_state=self.random_state,
             hidden_layer_sizes=self.hidden_layer_sizes,
             # Necessário pra garantir que o treinamento termine
             max_iter=self.max_iter
         )
+        return classifier
+
+    def _train_classifier(self, classifier, features_train, target_train):
         before = time.time()
         classifier.fit(features_train, target_train)
         after = time.time()
@@ -94,3 +99,10 @@ class MultilayerPerceptron:
         duration = Utils.format_duration(before, after)
         print(f"tempo para predict: {duration}ms")
         return prediction
+
+    def _print_parameters(self):
+        print('--------------------')
+        print('parameters:')
+        print('max iter: ', self.max_iter)
+        print('hidden layers: ', self.hidden_layer_sizes)
+        print('--------------------')
