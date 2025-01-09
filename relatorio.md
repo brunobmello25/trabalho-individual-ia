@@ -38,5 +38,7 @@ Por fim, a função `accuracy_score` do sklearn foi utilizada para medir a preci
 
 ### Decision Tree
 
-- o parâmetro `criterion` foi testado com os valores `gini` e `entropy`, que influencia na forma em que as divisões são avaliadas. Isso pode influenciar na estrutura final da árvore.
+- o parâmetro `criterion` foi testado com os valores `gini` e `entropy`, que influencia na forma em que as divisões são avaliadas. Isso pode influenciar na estrutura final da árvore. Não houve mudança significativa no tempo de execução ou na acurácia entre esses dois métodos.
+- o parâmetro `max_depth` foi testado com os valores `5`, `10`, `15`, `20` e `25`
+
 
