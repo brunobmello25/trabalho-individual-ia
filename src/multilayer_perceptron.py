@@ -8,11 +8,24 @@ import src.utils as Utils
 
 
 class MultilayerPerceptron:
-    def __init__(self, dataset, random_state, max_iter, hidden_layer_configurations):
+    def __init__(self, dataset, random_state, max_iter):
         self.dataset: Any = dataset
         self.random_state: int = random_state
         self.max_iter = max_iter
-        self.hidden_layer_configurations = hidden_layer_configurations
+        self.hidden_layer_configurations = self.generate_layer_configurations(
+            max_neurons=350, max_layers=5, step=50)
+        self.best_accuracy = -1
+
+    def generate_layer_configurations(self, max_neurons: int, max_layers: int, step: int = 10) -> List[Tuple[int, ...]]:
+        neuron_counts = list(range(step, max_neurons + 1, step))
+
+        configurations = []
+        for num_layers in range(1, max_layers + 1):
+            for neurons in neuron_counts:
+                configuration = (neurons,) * num_layers
+                configurations.append(configuration)
+
+        return configurations
 
     def run(self):
         features = self.dataset.data.features
@@ -32,6 +45,9 @@ class MultilayerPerceptron:
             classifier = self._make_classifier(hidden_layers)
             accuracy, overfitting_chance = self._train_and_evaluate(
                 classifier, features_train, target_train, features_test, target_test)
+            if accuracy > self.best_accuracy:
+                self.best_accuracy = accuracy
+                self.best_configuration = hidden_layers
             results.append((hidden_layers, accuracy, overfitting_chance))
             print('--------------------')
 
@@ -40,6 +56,8 @@ class MultilayerPerceptron:
         for config, accuracy, overfitting in results:
             print(
                 f"Camadas ocultas: {config}, Precisão: {accuracy:.4f}, Chance de Overfitting: {overfitting:.2f}")
+        print('melhor configuração: ', self.best_configuration)
+        print('melhor acurácia: ', self.best_accuracy)
 
     def _measure_overfitting_chance(self, classifier, features_train, target_train, features_test, target_test):
         train_accuracy = accuracy_score(
