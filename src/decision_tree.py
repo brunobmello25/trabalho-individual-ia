@@ -32,7 +32,7 @@ class DecisionTree:
         prediction = self._predict(classifier, features_test)
 
         accuracy = accuracy_score(target_test, prediction)
-        print(f"Precisão da Decision Tree: {accuracy:.2f}")
+        print(f"Precisão da Decision Tree: {accuracy:.4f}")
 
         self._plot_tree(classifier, encoder)
 

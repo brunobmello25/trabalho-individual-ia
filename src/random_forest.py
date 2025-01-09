@@ -27,13 +27,14 @@ class RandomForest:
             encoded_features, targets)
 
         classifier = self._make_classifier()
+        self._print_classifier_parameters(classifier)
 
         self._train_classifier(classifier, features_train, target_train)
 
         prediction = self._predict(classifier, features_test)
 
         accuracy = accuracy_score(target_test, prediction)
-        print(f"Precisão da Random Forest: {accuracy:.2f}")
+        print(f"Precisão da Random Forest: {accuracy:.4f}")
 
     def _onehotencode(self, features):
         encoder = OneHotEncoder()
@@ -56,7 +57,7 @@ class RandomForest:
 
     def _make_classifier(self):
         classifier = RandomForestClassifier(
-            random_state=self.random_state, n_estimators=self.tree_count)
+            random_state=self.random_state, n_estimators=self.tree_count, criterion='gini')
         return classifier
 
     def _train_classifier(self, classifier, features_train, target_train):
@@ -74,3 +75,10 @@ class RandomForest:
         duration = Utils.format_duration(before, after)
         print(f"tempo para predict: {duration}ms")
         return prediction
+
+    def _print_classifier_parameters(self, classifier):
+        print('---------------------')
+        print('parameters:')
+        print('criterion: ', classifier.criterion)
+        print('n_estimators: ', classifier.n_estimators)
+        print('---------------------')
