@@ -1,6 +1,5 @@
-from typing import Any, List, Tuple
+from typing import Any
 from ucimlrepo import fetch_ucirepo
-from itertools import product
 
 from src.decision_tree import DecisionTree
 from src.random_forest import RandomForest
@@ -19,8 +18,7 @@ def main():
     if args.is_decision_tree():
         DecisionTree(dataset=dataset, random_state=random_state).run()
     elif args.is_random_forest():
-        RandomForest(dataset=dataset, random_state=random_state,
-                     tree_count=Consts.TREE_COUNT).run()
+        RandomForest(dataset=dataset, random_state=random_state).run()
     elif args.is_perceptron():
         MultilayerPerceptron(
             dataset=dataset, random_state=random_state, max_iter=Consts.MAX_PERCEPTRON_ITER).run()
