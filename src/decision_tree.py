@@ -15,6 +15,10 @@ class DecisionTree:
         self.random_state: int = random_state
 
     def run(self):
+        for depth in range(10, 100+1, 10):
+            self.run_experiment(depth)
+
+    def run_experiment(self, depth):
         features = self.dataset.data.features
         targets = self.dataset.data.targets
 
@@ -23,7 +27,7 @@ class DecisionTree:
         features_train, features_test, target_train, target_test = self._split(
             encoded_features, targets)
 
-        classifier = self._make_classifier()
+        classifier = self._make_classifier(depth)
 
         # self._print_classifier_parameters(classifier)
 
@@ -33,8 +37,9 @@ class DecisionTree:
 
         accuracy = accuracy_score(target_test, prediction)
         f1 = f1_score(target_test, prediction, average='weighted')
-        print(f"Precisão da Decision Tree: {accuracy:.4f}")
-        print(f"F1-score da Decision Tree: {f1:.4f}")
+        print(f"Precisão com depth {depth}: {accuracy:.4f}")
+        print(f"F1-score com depth {depth}: {f1:.4f}")
+        print()
 
         self._plot_tree(classifier, encoder)
 
@@ -44,7 +49,7 @@ class DecisionTree:
         encoded = encoder.fit_transform(features)
         after = time.time()
         duration = Utils.format_duration(before, after)
-        print(f"tempo para encode: {duration}ms")
+        # print(f"tempo para encode: {duration}ms")
         return encoded, encoder
 
     def _split(self, encoded_features, targets):
@@ -53,12 +58,12 @@ class DecisionTree:
             encoded_features, targets, test_size=0.3, random_state=self.random_state)
         after = time.time()
         duration = Utils.format_duration(before, after)
-        print(f"tempo para split: {duration}ms")
+        # print(f"tempo para split: {duration}ms")
         return features_train, features_test, target_train, target_test
 
-    def _make_classifier(self):
+    def _make_classifier(self, depth):
         classifier = DecisionTreeClassifier(
-            random_state=self.random_state, criterion='gini', max_depth=10)
+            random_state=self.random_state, criterion='gini', max_depth=depth)
         return classifier
 
     def _print_classifier_parameters(self, classifier):
@@ -73,14 +78,14 @@ class DecisionTree:
         classifier.fit(features_train, target_train)
         after = time.time()
         duration = Utils.format_duration(before, after)
-        print(f"tempo para treinar: {duration}ms")
+        # print(f"tempo para treinar: {duration}ms")
 
     def _predict(self, classifier, features_test):
         before = time.time()
         prediction = classifier.predict(features_test)
         after = time.time()
         duration = Utils.format_duration(before, after)
-        print(f"tempo para predict: {duration}ms")
+        # print(f"tempo para predict: {duration}ms")
         return prediction
 
     def _plot_tree(self, classifier, encoder):

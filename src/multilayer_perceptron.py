@@ -117,19 +117,3 @@ class MultilayerPerceptron:
         duration = Utils.format_duration(before, after)
         # print(f"tempo para predict: {duration}ms")
         return prediction
-
-
-# Exemplo de como inicializar e executar
-hidden_layer_configurations = [
-    (10,),
-    (50,),
-    (100,),
-    (50, 50),
-    (100, 50),
-    (50, 100),
-    (100, 100)
-]
-
-# Você deve fornecer o dataset apropriado ao MultilayerPerceptron
-# mlp = MultilayerPerceptron(dataset, random_state=42, max_iter=200, hidden_layer_configurations=hidden_layer_configurations)
-# mlp.run()
