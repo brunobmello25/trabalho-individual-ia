@@ -30,7 +30,6 @@ class RandomForest:
 
     def run_experiment(self, features_train, target_train, features_test, target_test, tree_count):
         classifier = self._make_classifier(tree_count)
-        # self._print_classifier_parameters(classifier)
 
         self._train_classifier(classifier, features_train, target_train)
 

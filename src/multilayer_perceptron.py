@@ -38,7 +38,6 @@ class MultilayerPerceptron:
         features_train, features_test, target_train, target_test = self._split(
             encoded_features, targets)
 
-        # Testar diferentes configurações de camadas ocultas
         results = []
         i = 0
         for hidden_layers in self.hidden_layer_configurations:
@@ -57,7 +56,6 @@ class MultilayerPerceptron:
             results.append((hidden_layers, accuracy, f1))
             print('--------------------')
 
-        # Exibir resultados
         print("\nResultados:")
         for config, accuracy, f1 in results:
             print(

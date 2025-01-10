@@ -29,8 +29,6 @@ class DecisionTree:
 
         classifier = self._make_classifier(depth)
 
-        # self._print_classifier_parameters(classifier)
-
         self._train_classifier(classifier, features_train, target_train)
 
         prediction = self._predict(classifier, features_test)
