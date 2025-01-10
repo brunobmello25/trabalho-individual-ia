@@ -3,7 +3,7 @@ from typing import Any
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.tree import DecisionTreeClassifier, plot_tree
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 import matplotlib.pyplot as plt
 
 import src.utils as Utils
@@ -32,7 +32,9 @@ class DecisionTree:
         prediction = self._predict(classifier, features_test)
 
         accuracy = accuracy_score(target_test, prediction)
+        f1 = f1_score(target_test, prediction, average='weighted')
         print(f"Precisão da Decision Tree: {accuracy:.4f}")
+        print(f"F1-score da Decision Tree: {f1:.4f}")
 
         self._plot_tree(classifier, encoder)
 
